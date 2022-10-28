@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { ApiService } from "../../api/axios";
 
 
-export default function weatherByDay(props) {
+export default function WeatherByDay(props) {
 
   
   navigationOptions = (props) => {
@@ -47,7 +47,7 @@ console.log(location);
 
   return (
     <View>
-      <Text> {meteo} </Text>
+      <Text> {meteo} hello </Text>
     </View>
   )
 }

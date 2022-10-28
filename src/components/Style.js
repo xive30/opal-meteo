@@ -5,7 +5,7 @@ export default {
     },
     container: {
         flex: 1,
-        margin:20,
+        paddingHorizontal:20,
         backgroundColor: '#40A0ff',
         alignItems: 'center',
         justifyContent: 'center',

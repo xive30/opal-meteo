@@ -1,44 +1,107 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
-
 import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { ActivityIndicator, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import * as Location from 'expo-location';
+import { StatusBar } from 'expo-status-bar';
+import Constants from 'expo-constants';
+import axios from 'axios';
+import CurrentWeather from './src/components/CurrentWeather';
+import Forecasts from './src/components/Forecasts';
+import { Feather } from '@expo/vector-icons';
 
 
+const API_URL = (lat, lon) =>
+  `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=0574f7310aac987459fe294984066659&lang=fr&units=metric`
 
-import About from './src/components/About';
-import Search from './src/components/Search';
-import { ApiService } from './src/api/axios';
-import WeatherByDay from './src/components/weather/WeatherByDay';
-
-const Tab = createMaterialTopTabNavigator();
 
 export default function App() {
 
+  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState(null)
+  const [current, setcurrent] = useState(0)
+
+
+  useEffect(() => {
+    const getCoordinates = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== "granted") {
+        return
+      }
+
+      const userLocation = await Location.getCurrentPositionAsync()
+      getWeather(userLocation);
+    }
+
+    getCoordinates();
+  }, [])
+
+
+  const getWeather = async (location) => {
+    try {
+      const response = await axios.get(API_URL(location.coords.latitude, location.coords.longitude))
+
+      setData(response.data)
+      setLoading(false)
+
+    } catch (e) {
+      console.log("Erreur dans getWeather, " + e);
+    }
+  }
+
+  if (loading) {
+    return <View style={styles.container}>
+      <ActivityIndicator size="large" color="#FF0000" />
+    </View>
+  }
+
   return (
-  // <WeatherByDay />
-    <View style={{ flex: 1 }} >
-      <NavigationContainer>
+    <View style={styles.container}>
 
-        <Tab.Navigator  
-          screenOptions={() => ({
-            tabBarActiveTintColor: '#40A0ff',
-            tabBarInactiveTintColor: 'gray',
-            tabBarPressColor: '#20507f',
-            tabBarIndicatorStyle: {
-              height:2,
-              backgroundColor: '#FFF'
-            }
-          })}
+      <CurrentWeather data={data} current={current} />
+
+
+      <View style={styles.forecastTitleContainer}>
+        <Text style={styles.forecastsTitle}>Aujourd'hui</Text>
+        <TouchableOpacity
+          style={styles.button}
         >
-          <Tab.Screen name='Search' component={Search} />
-          <Tab.Screen name='About' component={About} />
-        </Tab.Navigator>
+          <Text>5 days </Text>
+          <Feather name="chevron-right" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
 
-        <StatusBar hidden={true} style="auto" />
-      </NavigationContainer>
-      
+      <Forecasts data={data} setcurrent={setcurrent()} />
+      {/* <StatusBar hidden={true} style="auto" /> */}
     </View>
   );
 }
+
+
+const PRIMARYCOLOR = '#ffffff';
+const SECONDARYCOLOR = '#FFFFFFCC';
+
+const styles = StyleSheet.create({
+  forecastTitleContainer: {
+    width: "100%",
+    flexDirection: 'row',
+    justifyContent: "space-between",
+  },
+  forecastsTitle: {
+    fontSize: 18,
+    color: PRIMARYCOLOR,
+    fontWeight:"700",
+  },
+  button: {
+    flexDirection: "row",
+    color: SECONDARYCOLOR,
+    fontWeight:"700",
+  },
+
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#000000',
+    padding: 0,
+  }
+})

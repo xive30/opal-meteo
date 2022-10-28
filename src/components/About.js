@@ -1,19 +1,9 @@
 import React from "react";
 import { View, Text, Image, Button } from "react-native";
-
 import Style from "./Style";
 
 
 export default function About({navigation}) {
-
-    const navigationOptions = {
-        tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
-            return <Ionicons name={iconName} size={20} color={color} />;
-        }
-    }
-
     return (
         <View style={Style.container}>
             <Text style={Style.title} >A propos de l'application</Text>
@@ -23,8 +13,7 @@ export default function About({navigation}) {
                     fontWeight: "bold",
                     marginBottom: 24,
                 }}
-            >
-                Bienvenue sur mon Application Météo!
+            >Bienvenue sur mon Application Météo!
                 Pour plus d'info sur les images: Weatherly 3D Illustration Pack
             </Text>
             <Image
@@ -36,4 +25,3 @@ export default function About({navigation}) {
         </View>
     )
 }
-
