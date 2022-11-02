@@ -2,7 +2,6 @@ import { StyleSheet, View, Text, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import FiveDaysCard from './FiveDaysCard';
 
 export default function FiveDaysWeather({ data }) {
 
