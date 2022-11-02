@@ -47,7 +47,7 @@ export default function CurrentWeather({ data, current }) {
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <MaterialCommunityIcons name="weather-rainy" size={24} color="white" />
-                    <Text style={styles.subContainerData}>{Math.abs(data.list[current].pop * 100)} %</Text>
+                    <Text style={styles.subContainerData}>{Math.round(data.list[current].pop * 100)} %</Text>
                     <Text style={styles.subContainerName}>Chance de pluie</Text>
                 </View>
             </View>

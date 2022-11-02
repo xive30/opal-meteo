@@ -11,7 +11,6 @@ export default function FiveDaysWeather({ data }) {
         const forecastsData = data.list.filter((f, index, self) => {
             const dt = new Date(f.dt * 1000)
             const day = format(dt, "EEE", { locale: fr })
-            console.log(day);
         })
         .map(f => {
             return ({
@@ -25,7 +24,6 @@ export default function FiveDaysWeather({ data }) {
         })
 
         setForecasts(forecastsData)
-        console.log({ forecastsData });
     }, [data])
 
 
