@@ -8,19 +8,24 @@ export default function FiveDaysWeather({ data }) {
     const [forecasts, setForecasts] = useState([]);
 
     useEffect(() => {
-        const forecastsData = data.list.map(f => {
+        const forecastsData = data.list.filter((f, index, self) => {
             const dt = new Date(f.dt * 1000)
+            const day = format(dt, "EEE", { locale: fr })
+            console.log(day);
+        })
+        .map(f => {
             return ({
-                date: dt,
-                hour: dt.getHours(),
-                desc: f.weather.desc,
+                date: f.dt,
+                desc: f.weather[0].description,
                 tempMin: Math.round(f.main.temp_min),
                 tempMax: Math.round(f.main.temp_max),
                 icon: f.weather[0].icon,
-                name: format(dt, "EEE", { locale: fr })
+                day: format(dt, "EEE", { locale: fr })
             })
         })
+
         setForecasts(forecastsData)
+        console.log({ forecastsData });
     }, [data])
 
 
@@ -29,8 +34,8 @@ export default function FiveDaysWeather({ data }) {
             style={styles.container}
         >
             {forecasts.map((f, id) => (
-                <View key={id} style={{flexDirection: "row", justifyContent: "space-around",}}>
-                    <Text style={styles.text}>{f.name}</Text>
+                <View key={id} style={{ flexDirection: "row", justifyContent: "space-around", }}>
+                    <Text style={styles.text}>{f.day}</Text>
                     <Image
                         style={styles.image}
                         source={{
@@ -42,6 +47,7 @@ export default function FiveDaysWeather({ data }) {
                         <Text style={styles.tempMax}>{f.tempMax} / </Text>
                         <Text style={styles.tempMin}>{f.tempMin}°</Text>
                     </View>
+
                 </View>
             ))}
 
@@ -61,7 +67,7 @@ const styles = StyleSheet.create({
         color: SECONDARYCOLOR,
     },
     image: {
-        color:'#fff',
+        color: '#fff',
         width: 50,
         height: 50
     },
