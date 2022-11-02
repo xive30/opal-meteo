@@ -5,7 +5,7 @@ const getIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@2x.png`
 
 
 
-export default function Weather({ forecasts, selectedId }) {
+export default function WeatherCards({ forecasts, selectedId }) {
 
     return (
         <View style={selectedId ? styles.selectedContainer : styles.container}>
@@ -20,6 +20,9 @@ export default function Weather({ forecasts, selectedId }) {
 
     )
 }
+
+const PRIMARYCOLOR = '#ffffff';
+const SECONDARYCOLOR = '#FFFFFFAA';
 
 const styles = StyleSheet.create({
     container: {

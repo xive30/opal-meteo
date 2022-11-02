@@ -7,7 +7,7 @@ import { fr } from 'date-fns/locale'
 
 const getIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@4x.png`
 
-export default function CurrentWeather({ data, current }) {
+export default function MainDayWeathers({ data }) {
 
     return (
             <LinearGradient
@@ -18,36 +18,44 @@ export default function CurrentWeather({ data, current }) {
 
             <View style={{ flexDirection: "row", marginTop: 30, justifyContent: "space-around", width: "100%" }}>
 
-                <Ionicons style={styles.pressButton} name="grid" size={18} color="white" />
+                <Feather name="chevron-right" size={18} color="white" />
                 <View style={{ flexDirection: "row" }}>
-                    <Ionicons name="location-sharp" size={18} color="white" />
-                    <Text style={styles.city}>{data?.city?.name}</Text>
+                <MaterialCommunityIcons name="calendar-today" size={24} color="white" />
+                    <Text style={styles.city}>5days</Text>
                 </View>
                 <Ionicons name="ellipsis-vertical-sharp" size={18} color="white" />
             </View>
 
-            <Image source={{ uri: getIcon(data.list[current].weather[0].icon) }}
-                style={styles.image}
-            />
+            <View style={{flexDirection: "row", marginVertical:20}}>
+                <Image source={{ uri: getIcon(data.list[0].weather[0].icon) }}
+                    style={styles.image}
+                />
+                <View style={{ justifyContent: "center", alignItems: "center"}}>
+                    <Text style={{color:"white"}}>  {format(data.list[0]?.dt, "EEEE", { locale: fr })} </Text>
 
-            <Text style={styles.temp}> {Math.round(data.list[current].main.temp)}°</Text>
-            <Text style={(styles.description)}> {data.list[current].weather[0].description}</Text>
-            <Text style={styles.subContainerName}>  {format(data.list[current]?.dt, "EEEE dd MMMM", { locale: fr })} </Text>
+                    <View style={{flexDirection: "row"}}>
+                        <Text style={styles.tempMax}> {Math.round(data.list[0].main.temp_max)}</Text>
+                        <Text style={styles.tempMin}>/{Math.round(data.list[0].main.temp_min)}°</Text>
+                    </View>
+
+                    <Text style={(styles.description)}> {data.list[0].weather[0].description}</Text>
+                </View>
+            </View>
 
             <View style={styles.subContainer}>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Feather name="wind" size={24} color="white" />
-                    <Text style={styles.subContainerData}>{data.list[current].wind.speed} km/h</Text>
+                    <Text style={styles.subContainerData}>{data.list[0].wind.speed} km/h</Text>
                     <Text style={styles.subContainerName}>Vent</Text>
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Ionicons name="ios-water" size={24} color="#66b3ee" />
-                    <Text style={styles.subContainerData}>{data.list[current].main.humidity} %</Text>
+                    <Text style={styles.subContainerData}>{data.list[0].main.humidity} %</Text>
                     <Text style={styles.subContainerName}>Humidité</Text>
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <MaterialCommunityIcons name="weather-rainy" size={24} color="white" />
-                    <Text style={styles.subContainerData}>{data.list[current].pop * 100} %</Text>
+                    <Text style={styles.subContainerData}>{data.list[0].pop * 100} %</Text>
                     <Text style={styles.subContainerName}>Chance de pluie</Text>
                 </View>
             </View>
@@ -61,8 +69,9 @@ const SECONDARYCOLOR = '#FFFFFFAA';
 
 const styles = StyleSheet.create({
     container: {
-        height: "75%",
+        height: "50%",
         width: "100%",
+        justifyContent:"center",
         alignItems: 'center',
         borderRadius: 50,
         borderColor: "#2c93e5",
@@ -79,26 +88,27 @@ const styles = StyleSheet.create({
         borderColor: SECONDARYCOLOR,
         borderRadius: 50,
     },
-    city: {
-        fontSize: 18,
-        fontWeight: "500",
-        color: PRIMARYCOLOR
-    },
     today: {
         fontSize: 12,
         fontWeight: "300",
         color: PRIMARYCOLOR
     },
-    image: { width: 200, height: 200 },
-    temp: {
-        fontSize: 80,
+    image: { width: 150, height: 150 },
+    tempMax: {
+        fontSize: 42,
         fontWeight: "bold",
         color: PRIMARYCOLOR
     },
+    tempMin: {
+        fontSize: 34,
+        fontWeight: "bold",
+        color: SECONDARYCOLOR,
+        textAlignVertical: "bottom"
+    },
     description: {
-        fontSize: 28,
+        fontSize: 14,
         fontWeight: "400",
-        color: PRIMARYCOLOR
+        color: SECONDARYCOLOR
     },
     subContainerImage: {
         width: 50,

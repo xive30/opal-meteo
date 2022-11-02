@@ -2,7 +2,7 @@ import { StyleSheet, Pressable, ScrollView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import Weather from './Weather';
+import WeatherCard from './WeatherCard';
 
 export default function Forecasts({ data, setCurrent, current }) {
 
@@ -31,7 +31,7 @@ export default function Forecasts({ data, setCurrent, current }) {
         >
             {forecasts.slice(0, 8).map((f, id) => (
             <Pressable key={id} onPress={() => {setCurrent(id);}}>
-                        <Weather 
+                        <WeatherCard
                         forecasts={f}
                         key={id}
                         selectedId={id == current ? true : false}
