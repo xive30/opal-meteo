@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { isSameDay, format } from 'date-fns';
+import React from 'react'
+import { format } from 'date-fns';
 import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { fr } from 'date-fns/locale'
@@ -8,48 +8,31 @@ import { fr } from 'date-fns/locale'
 const getIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@4x.png`
 
 export default function CurrentWeather({ data, current }) {
-    const [curentWeather, setCurrentWeather] = useState(null);
-    const [curentDate, setCurrentDate] = useState(null);
-    const [current, setCurrent] = useState(0)
-
-    useEffect(() => {
-        const currentW = data.list.filter(forecast => {
-            const forecastDate = new Date(forecast.dt * 1000)
-            const today = new Date().getTime() + Math.abs(data.city.timezone * 1000)
-            return isSameDay(today, forecastDate)
-        })
-        setCurrentWeather(currentW[current]);
-        setCurrentDate(format(currentW[current]?.dt, "EEEE dd MMMM", { locale: fr }))
-
-    }, [data])
-
-
 
     return (
-        <View style={styles.container}>
             <LinearGradient
                 // Background Linear Gradient
-                colors={['#15bef680', 'transparent']}
-                style={styles.backgroundContainer}
-            />
+                colors={['#15bef6', '#1E90FF']}
+                style={styles.container}
+            >
 
-            <View style={{ flexDirection: "row", marginTop: 30 , justifyContent: "space-around", width:"100%"}}>
+            <View style={{ flexDirection: "row", marginTop: 30, justifyContent: "space-around", width: "100%" }}>
 
                 <Ionicons style={styles.pressButton} name="grid" size={18} color="white" />
-                <View style={{ flexDirection: "row"}}>
+                <View style={{ flexDirection: "row" }}>
                     <Ionicons name="location-sharp" size={18} color="white" />
                     <Text style={styles.city}>{data?.city?.name}</Text>
                 </View>
                 <Ionicons name="ellipsis-vertical-sharp" size={18} color="white" />
             </View>
 
-            <Image source={{ uri: getIcon(curentWeather?.weather[current].icon) }}
+            <Image source={{ uri: getIcon(data.list[current].weather[0].icon) }}
                 style={styles.image}
             />
 
-            <Text style={styles.temp}> {Math.round(curentWeather?.main.temp)}°</Text>
-            <Text style={(styles.description)}> {curentWeather?.weather[current].description}</Text>
-            <Text style={styles.subContainerName}>  {curentDate} </Text>
+            <Text style={styles.temp}> {Math.round(data.list[current].main.temp)}°</Text>
+            <Text style={(styles.description)}> {data.list[current].weather[0].description}</Text>
+            <Text style={styles.subContainerName}>  {format(data.list[current]?.dt, "EEEE dd MMMM", { locale: fr })} </Text>
 
             <View
                 style={{
@@ -62,21 +45,22 @@ export default function CurrentWeather({ data, current }) {
             <View style={styles.subContainer}>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Feather name="wind" size={24} color="white" />
-                    <Text style={styles.subContainerData}>{curentWeather?.wind.speed} km/h</Text>
+                    <Text style={styles.subContainerData}>{data.list[current].wind.speed} km/h</Text>
                     <Text style={styles.subContainerName}>Vent</Text>
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Ionicons name="ios-water" size={24} color="#66b3ee" />
-                    <Text style={styles.subContainerData}>{curentWeather?.main.humidity} %</Text>
+                    <Text style={styles.subContainerData}>{data.list[current].main.humidity} %</Text>
                     <Text style={styles.subContainerName}>Humidité</Text>
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <MaterialCommunityIcons name="weather-rainy" size={24} color="white" />
-                    <Text style={styles.subContainerData}>{curentWeather?.pop} %</Text>
+                    <Text style={styles.subContainerData}>{data.list[current].pop * 100} %</Text>
                     <Text style={styles.subContainerName}>Chance de pluie</Text>
                 </View>
             </View>
-        </View>
+        </LinearGradient>
+
     )
 }
 
@@ -88,7 +72,6 @@ const styles = StyleSheet.create({
         height: "75%",
         width: "100%",
         alignItems: 'center',
-        backgroundColor: '#1E90FF',
         borderRadius: 50,
         borderColor: "#2c93e5",
         borderWidth: 2,
@@ -99,14 +82,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         paddingTop: 30,
         bottom: 0,
-    },
-    backgroundContainer: {
-        borderRadius: 50,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        height: 300,
     },
     pressButton: {
         borderColor: SECONDARYCOLOR,

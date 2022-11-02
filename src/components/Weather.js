@@ -5,10 +5,10 @@ const getIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@2x.png`
 
 
 
-export default function Weather({ forecasts }) {
+export default function Weather({ forecasts, selectedId }) {
 
     return (
-        <View style={styles.container}>
+        <View style={selectedId ? styles.selectedContainer : styles.container}>
             
             <Text style={styles.temp} >{forecasts.temp}°</Text>
             <Image source={{ uri: getIcon(forecasts?.icon) }}
@@ -23,6 +23,18 @@ export default function Weather({ forecasts }) {
 
 const styles = StyleSheet.create({
     container: {
+        height: 140,
+        width: 90,
+        paddingVertical: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+        borderRadius: 30,
+        borderColor: '#80808080',
+        borderWidth: 2,
+    },
+    selectedContainer: {
+        backgroundColor: "#11a9fe",
         height: 140,
         width: 90,
         paddingVertical: 6,

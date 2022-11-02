@@ -17,7 +17,7 @@ export default function App() {
 
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState(null)
-  const [current, setcurrent] = useState(0)
+  const [current, setCurrent] = useState(0)
 
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function App() {
 
   if (loading) {
     return <View style={styles.container}>
-      <ActivityIndicator size="large" color="#FF0000" />
+      <ActivityIndicator size="large" color="#15bef6" />
     </View>
   }
 
@@ -69,8 +69,8 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
-      <Forecasts data={data} setcurrent={setcurrent()} />
-      {/* <StatusBar hidden={true} style="auto" /> */}
+      <Forecasts data={data} setCurrent={setCurrent} current={current} />
+      <StatusBar hidden={true}/>
     </View>
   );
 }

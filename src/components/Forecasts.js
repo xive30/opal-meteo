@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import Weather from './Weather';
 
-export default function Forecasts({ data }) {
+export default function Forecasts({ data, setCurrent, current }) {
 
     const [forecasts, setForecasts] = useState([]);
 
@@ -29,23 +29,15 @@ export default function Forecasts({ data }) {
             showsHorizontalScrollIndicator={false}
             style={styles.scroll}
         >
-            {/* <Pressable
-                onPress={() => {
-                    setsetCurrent(id);
-                }}
-                style={({ pressed }) => [
-                    {
-                        backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
-                    },
-                    styles.wrapperCustom,
-                ]}
-            > */}
-                {forecasts.map((f, id) => (
-                    <View key={id}>
-                        <Weather forecasts={f} />
-                    </View>
+            {forecasts.slice(0, 8).map((f, id) => (
+            <Pressable key={id} onPress={() => {setCurrent(id);}}>
+                        <Weather 
+                        forecasts={f}
+                        key={id}
+                        selectedId={id == current ? true : false}
+                        />
+                </Pressable>
                 ))}
-            {/* </Pressable> */}
 
         </ScrollView>
     )
