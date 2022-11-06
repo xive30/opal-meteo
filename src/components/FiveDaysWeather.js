@@ -8,13 +8,13 @@ export default function FiveDaysWeather({ data }) {
     const [forecasts, setForecasts] = useState([]);
 
     useEffect(() => {
-        const forecastsData = data.list.filter((f, index, self) => {
-            const dt = new Date(f.dt * 1000)
-            const day = format(dt, "EEE", { locale: fr })
-        })
+        const forecastsData = data.list.filter( f => f.dt_txt.split(" ")[1] == "12:00:00")
         .map(f => {
+            const dt = new Date(f.dt * 1000);
+            const hour = f.dt_txt.split(" ")[1];
+
             return ({
-                date: f.dt,
+                date: dt,
                 desc: f.weather[0].description,
                 tempMin: Math.round(f.main.temp_min),
                 tempMax: Math.round(f.main.temp_max),
@@ -22,6 +22,7 @@ export default function FiveDaysWeather({ data }) {
                 day: format(dt, "EEE", { locale: fr })
             })
         })
+        
 
         setForecasts(forecastsData)
     }, [data])
@@ -32,7 +33,7 @@ export default function FiveDaysWeather({ data }) {
             style={styles.container}
         >
             {forecasts.map((f, id) => (
-                <View key={id} style={{ flexDirection: "row", justifyContent: "space-around", }}>
+                <View key={id} style={{ flexDirection: "row", justifyContent: "space-around", height:60, marginTop:20 }}>
                     <Text style={styles.text}>{f.day}</Text>
                     <Image
                         style={styles.image}

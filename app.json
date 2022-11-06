@@ -8,7 +8,7 @@
     "icon": "./assets/rayman.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/Globox.png",
+      "image": "./assets/raymanslash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
