@@ -58,7 +58,7 @@ export default function App() {
 
   if(fiveDays || data == null) return (
     <View style={{backgroundColor:"black"}}>
-      <MainDayWeathers data={data}/>
+      <MainDayWeathers data={data} setFiveDays={setFiveDays} />
       <FiveDaysWeather data={data} />
     </View>
   )

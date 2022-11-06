@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import React from 'react'
 import { format } from 'date-fns';
 import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,33 +7,34 @@ import { fr } from 'date-fns/locale'
 
 const getIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@4x.png`
 
-export default function MainDayWeathers({ data }) {
+export default function MainDayWeathers({ data, setFiveDays }) {
 
     return (
-            <LinearGradient
-                // Background Linear Gradient
-                colors={['#15bef6', '#1E90FF']}
-                style={styles.container}
-            >
+        <LinearGradient
+            // Background Linear Gradient
+            colors={['#15bef6', '#1E90FF']}
+            style={styles.container}
+        >
 
             <View style={{ flexDirection: "row", marginTop: 30, justifyContent: "space-around", width: "100%" }}>
-
-                <Feather name="chevron-right" size={18} color="white" />
+                <Pressable onPress={() => (setFiveDays(false))}>
+                    <Feather name="chevron-left" size={18} color="white" />
+                </Pressable>
                 <View style={{ flexDirection: "row" }}>
-                <MaterialCommunityIcons name="calendar-today" size={24} color="white" />
+                    <MaterialCommunityIcons name="calendar-today" size={24} color="white" />
                     <Text style={styles.city}>5days</Text>
                 </View>
                 <Ionicons name="ellipsis-vertical-sharp" size={18} color="white" />
             </View>
 
-            <View style={{flexDirection: "row", marginVertical:20}}>
+            <View style={{ flexDirection: "row", marginVertical: 20 }}>
                 <Image source={{ uri: getIcon(data.list[0].weather[0].icon) }}
                     style={styles.image}
                 />
-                <View style={{ justifyContent: "center", alignItems: "center"}}>
-                    <Text style={{color:"white"}}>  {format(data.list[0]?.dt, "EEEE", { locale: fr })} </Text>
+                <View style={{ justifyContent: "center", alignItems: "center" }}>
+                    <Text style={{ color: "white" }}>  {format(data.list[0]?.dt, "EEEE", { locale: fr })} </Text>
 
-                    <View style={{flexDirection: "row"}}>
+                    <View style={{ flexDirection: "row" }}>
                         <Text style={styles.tempMax}> {Math.round(data.list[0].main.temp_max)}</Text>
                         <Text style={styles.tempMin}>/{Math.round(data.list[0].main.temp_min)}°</Text>
                     </View>
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     container: {
         height: "50%",
         width: "100%",
-        justifyContent:"center",
+        justifyContent: "center",
         alignItems: 'center',
         borderRadius: 50,
         borderColor: "#2c93e5",
